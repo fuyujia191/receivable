@@ -3,5 +3,5 @@
 <mapper namespace="cn.jwinni.springboot.dao.UserDao">
 <select id="selectAllUser" resultType="cn.jwinni.springboot.domain.userInfo">
 		select * from  user
-	</select>
+</select>
 </mapper>

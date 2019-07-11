@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jwinni.springboot.dao.ProdectDao">
+
+    <!-- 条件查询操作 -->
+    <sql id="findObjectsWhere">
+        <where>
+            <if test="projectName != null and projectName != ''">
+                and projectName like CONCAT('%',#{projectName},'%')
+            </if>
+
+        </where>
+    </sql>
+
+    <!-- 定义一个查询操作 -->
+    <select id="selectProdectList"
+            resultType="cn.jwinni.springboot.domain.Prodect">
+        select *
+        from prodect
+        <include refid="findObjectsWhere"/>
+        limit #{startIndex},#{pageSize};
+    </select>
+
+    <!-- 通过id查询项目 -->
+    <select id="getProdectById" resultType="cn.jwinni.springboot.domain.Prodect">
+		select *
+		from prodect where  id = #{id}
+
+	</select>
+    <!-- 查询有效的项目 -->
+    <select id="getAffectiveProject" resultType="cn.jwinni.springboot.domain.Prodect">
+		SELECT * FROM `prodect` where startDate >NOW()
+	</select>
+    <!-- 查询表中总记录数(要根据此数据计算总页数) -->
+    <select id="getRowCount"
+            resultType="Integer">
+        select count(*)
+        from prodect
+        <include refid="findObjectsWhere"/>
+    </select>
+
+    <!-- 添加项目 -->
+    <insert id="insertProdect" parameterType="cn.jwinni.springboot.domain.Prodect">
+		insert into prodect(projectName,projectPrice,startDate,endDate,addDate) values(#{projectName},#{projectPrice},#{startDate},#{endDate},NOW());
+	</insert>
+
+    <!-- 保存验证码信息 -->
+    <insert id="insertVCode" parameterType="cn.jwinni.springboot.domain.ValidateCode">
+		insert into validatecode(telNo,code,createDate,expireDate,isUsed) values(#{telNo},#{code},NOW(),#{expireDate,jdbcType=VARCHAR},0);
+	</insert>
+
+    <!-- 校验验证码 -->
+    <select id="checkVCode" resultType="Integer" parameterType="java.lang.String">
+         SELECT count(*) FROM `validatecode` where expireDate > NOW() and telNo= #{phone} and code = #{code} and isUsed =0
+    </select>
+
+    <!-- 修改项目 -->
+    <update id="updateProdect" parameterType="cn.jwinni.springboot.domain.Prodect">
+        UPDATE prodect
+        <set>
+            <if test="projectName!= null and projectName != '' ">
+                projectName = #{projectName},
+            </if>
+            <if test="projectPrice!= null and projectPrice!= '' ">
+                projectPrice = #{projectPrice},
+            </if>
+            startDate = #{startDate},
+            endDate = #{endDate}
+
+        </set>
+        WHERE id = #{id};
+    </update>
+
+    <!-- 删除项目 -->
+    <delete id="deleteProdectById" parameterType="java.lang.String">
+delete from prodect where id in (${ids});
+    </delete>
+</mapper>

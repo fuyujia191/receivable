@@ -57,6 +57,7 @@
     function doLogin(){
         var userName = $('#username').val();
         var userPwd = $('#userpwd').val();
+
         if(userName==''){
             $('#errorMessage').parent().parent().css('display','block');
             $('#errorMessage').text('用户名不能为空！');
@@ -67,14 +68,22 @@
             $('#errorMessage').text('密码不能为空！');
             return false;
         }
+        var url = "/login"
+        var params = {
+            loginName: userName,
+            pwd:userPwd
+        };
+        $.post(url, params, function (result) {
 
-        if(userName=='admin' && userPwd =='admin'){
-            location.href='index';
-        }
-        else {
-            $('#errorMessage').parent().parent().css('display','block');
-            $('#errorMessage').text('账号或密码错误！');
-        }
+            if (result.state == 1) {//成功
+                location.href='index';
+
+            } else {//失败了(获取数据时出现异常了)
+                $('#errorMessage').parent().parent().css('display','block');
+                $('#errorMessage').text('账号或密码错误！');
+            }
+        });
+
     }
 </script>
 

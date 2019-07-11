@@ -43,12 +43,12 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Dashboard</li>
-      </ol>
-    </section>
+    <%--<section class="content-header">--%>
+      <%--<ol class="breadcrumb">--%>
+        <%--<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>--%>
+        <%--<li class="active">Dashboard</li>--%>
+      <%--</ol>--%>
+    <%--</section>--%>
 
     <!-- Main content -->
     <section class="content">
@@ -72,8 +72,8 @@
       <!-- 此位置放置具体页面的位置 -->
       <div class="modal-body"></div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary ok">Save changes</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
+        <button type="button" class="btn btn-primary ok">保存</button>
       </div>
     </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

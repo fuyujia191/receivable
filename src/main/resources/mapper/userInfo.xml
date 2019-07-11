@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jwinni.springboot.dao.UserDao">
+
+
+	<sql id="findObjectsWhere">
+		<where>
+			<if test="name != null and name != ''">
+				and name  like CONCAT('%',#{name},'%')
+			</if>
+			<if test="phone != null and phone != ''">
+				and phone  like CONCAT('%',#{phone},'%')
+			</if>
+		</where>
+	</sql>
+
+	<!-- 定义一个查询操作 -->
+	<select id="selectUserList"
+			resultType="cn.jwinni.springboot.domain.UserInfo">
+-- 		select *
+-- 		from userInfo
+		select u.* ,p.projectName from userinfo u LEFT JOIN prodect p ON u.projectId = p.id
+		<include refid="findObjectsWhere"/>
+		limit #{startIndex},#{pageSize};
+	</select>
+
+	<!-- 查询表中总记录数(要根据此数据计算总页数) -->
+	<select id="getRowCount"
+			resultType="Integer">
+		select count(*)
+		from userInfo
+		<include refid="findObjectsWhere"/>
+	</select>
+</mapper>
